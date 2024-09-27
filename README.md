@@ -1,5 +1,5 @@
 #Task Management 
-simple project in flutter 
+simple project in Flutter 
 
 # Build on this project ui
 
