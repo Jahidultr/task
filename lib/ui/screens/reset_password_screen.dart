@@ -1,18 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task/ui/screens/forgot_password_email_screen.dart';
-import 'package:task/ui/screens/sign_up_screen.dart';
+import 'package:task/ui/screens/forgot_password_otp_screen.dart';
+import 'package:task/ui/screens/sign_in_screen.dart';
 import 'package:task/ui/utils/app_colors.dart';
 import 'package:task/ui/widgets/screen_background.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -27,29 +27,22 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 const SizedBox(height: 82),
                 Text(
-                  'Get Started With',
+                  'Set Password ',
                   style: textTheme.displaySmall
                       ?.copyWith(fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(height: 20),
-                _buildSignInForm(),
-                const SizedBox(height: 24),
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: _onTabForgetPasswordButton,
-                        child: const Text(
-                          'Forget Password?',
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      _buildSignUpSection(),
-                    ],
+                const SizedBox(height: 8),
+                Text(
+                  'Minimum length password 8 character with Letter and number combination',
+                  style: textTheme.titleSmall?.copyWith(
+                    color: Colors.grey,
                   ),
+                ),
+                const SizedBox(height: 24),
+                _buildResetPasswordForm(),
+                const SizedBox(height: 48),
+                Center(
+                  child: _buildHaveAccountSection(),
                 ),
               ],
             ),
@@ -59,20 +52,18 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSignInForm() {
+  Widget _buildResetPasswordForm() {
     return Column(
       children: [
         TextFormField(
-          keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
-            hintText: 'Email',
+            hintText: 'Password',
           ),
         ),
         const SizedBox(height: 10),
         TextFormField(
-          obscureText: true,
           decoration: const InputDecoration(
-            hintText: 'password',
+            hintText: 'Confirm Password',
           ),
         ),
         const SizedBox(height: 10),
@@ -84,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSignUpSection() {
+  Widget _buildHaveAccountSection() {
     return RichText(
       text: TextSpan(
         style: const TextStyle(
@@ -93,12 +84,12 @@ class _SignInScreenState extends State<SignInScreen> {
           fontSize: 14,
           letterSpacing: 0.5,
         ),
-        text: "Don't have an account?  ",
+        text: "Have a account?  ",
         children: [
           TextSpan(
-            text: 'Sign Up',
+            text: 'Sign In',
             style: const TextStyle(color: AppColors.themeColor),
-            recognizer: TapGestureRecognizer()..onTap = _onTabSignUp,
+            recognizer: TapGestureRecognizer()..onTap = _onTabSignIn,
           ),
         ],
       ),
@@ -106,24 +97,16 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _onTabNextButton() {
-    //TODO: implement on tab next button
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
+        (_) => false);
   }
 
-  void _onTabForgetPasswordButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ForgotPasswordEmailScreen(),
-      ),
-    );
-  }
-
-  void _onTabSignUp() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SignUpScreen(),
-      ),
-    );
+  void _onTabSignIn() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
+        (_) => false);
   }
 }

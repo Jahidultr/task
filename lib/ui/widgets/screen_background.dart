@@ -14,6 +14,7 @@ class ScreenBackground extends StatelessWidget {
 
     return Stack(
       children: [
+
         SvgPicture.asset(
           AssetsPath.backgroundSvg,
           fit: BoxFit.cover,
