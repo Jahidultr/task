@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task/ui/screens/forgot_password_email_screen.dart';
+import 'package:task/ui/screens/main_bottom_nav_bar_screen.dart';
 import 'package:task/ui/screens/sign_up_screen.dart';
 import 'package:task/ui/utils/app_colors.dart';
 import 'package:task/ui/widgets/screen_background.dart';
@@ -16,6 +17,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: ScreenBackground(
@@ -106,7 +108,11 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _onTabNextButton() {
-    //TODO: implement on tab next button
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainBottomNavBarScreen()),
+      (value) => false,
+    );
   }
 
   void _onTabForgetPasswordButton() {
