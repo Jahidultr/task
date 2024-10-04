@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:task/ui/screens/add_new_task_screen.dart';
 import 'package:task/ui/screens/task_summary_task.dart';
 
+import '../widgets/task_card.dart';
+
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({super.key});
 
@@ -16,6 +18,17 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: Column(
         children: [
           _buildSummarySection(),
+          Expanded(
+            child: ListView.separated(
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                return const TaskCard();
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 8);
+              },
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

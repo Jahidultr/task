@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/task_card.dart';
+
 class ProgressTaskScreen extends StatelessWidget {
   const ProgressTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Progress screen'),
+    return ListView.separated(
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return const TaskCard();
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 8);
+      },
     );
   }
 }
