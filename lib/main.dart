@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'app.dart';
+import 'package:task/app.dart';
 
 void main() {
-  runApp(const TaskApp());
+  runApp(const TaskManagerApp());
 }

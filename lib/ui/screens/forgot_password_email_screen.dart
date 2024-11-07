@@ -16,8 +16,8 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: ScreenBackground(
         child: SingleChildScrollView(
           child: Padding(
@@ -33,17 +33,15 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'A 6 digit verification pin will be sent to your email address',
-                  style: textTheme.titleSmall?.copyWith(
-                    color: Colors.grey,
-                  ),
+                  'A 6 digits verification otp will be sent to your email address',
+                  style: textTheme.titleSmall?.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
                 _buildVerifyEmailForm(),
                 const SizedBox(height: 48),
                 Center(
                   child: _buildHaveAccountSection(),
-                ),
+                )
               ],
             ),
           ),
@@ -57,13 +55,11 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
       children: [
         TextFormField(
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-            hintText: 'Email',
-          ),
+          decoration: const InputDecoration(hintText: 'Email'),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: _onTabNextButton,
+          onPressed: _onTapNextButton,
           child: const Icon(Icons.arrow_circle_right_outlined),
         ),
       ],
@@ -74,24 +70,22 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
     return RichText(
       text: TextSpan(
         style: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-          letterSpacing: 0.5,
-        ),
-        text: "Have a account?  ",
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            letterSpacing: 0.5),
+        text: "Have account? ",
         children: [
           TextSpan(
-            text: 'Sign In',
-            style: const TextStyle(color: AppColors.themeColor),
-            recognizer: TapGestureRecognizer()..onTap = _onTabSignIn,
-          ),
+              text: 'Sign In',
+              style: const TextStyle(color: AppColors.themeColor),
+              recognizer: TapGestureRecognizer()..onTap = _onTapSignIn),
         ],
       ),
     );
   }
 
-  void _onTabNextButton() {
+  void _onTapNextButton() {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -100,7 +94,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
     );
   }
 
-  void _onTabSignIn() {
+  void _onTapSignIn() {
     Navigator.pop(context);
   }
 }

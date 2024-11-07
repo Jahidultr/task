@@ -14,9 +14,9 @@ class TaskSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
-      elevation: 0.5,
+      elevation: 0,
       child: SizedBox(
-        width: 100,
+        width: 110,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -24,18 +24,15 @@ class TaskSummaryCard extends StatelessWidget {
             children: [
               Text(
                 '$count',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
               ),
-              const SizedBox(height: 5),
-              FittedBox(
-                child: Text(
-                  '$title',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
+              const SizedBox(height: 4),
+              Text(
+                title,
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),

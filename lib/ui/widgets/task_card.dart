@@ -1,34 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:task/data/models/network_response.dart';
+import 'package:task/data/models/task_model.dart';
+import 'package:task/data/services/network_caller.dart';
+import 'package:task/data/utils/urls.dart';
+import 'package:task/ui/utils/app_colors.dart';
+import 'package:task/ui/widgets/centered_circular_progress_indicator.dart';
+import 'package:task/ui/widgets/snack_bar_message.dart';
 
 class TaskCard extends StatefulWidget {
   const TaskCard({
     super.key,
+    required this.taskModel,
+    required this.onRefreshList,
   });
+
+  final TaskModel taskModel;
+  final VoidCallback onRefreshList;
 
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
 
 class _TaskCardState extends State<TaskCard> {
+  String _selectedStatus = '';
+  bool _changeStatusInProgress = false;
+  bool _deleteTaskInProgress = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedStatus = widget.taskModel.status!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0.5,
+      elevation: 0,
+      color: Colors.white,
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Morning Yoga Session',
+              widget.taskModel.title ?? '',
               style: Theme.of(context).textTheme.titleSmall,
             ),
-            const Text(
-              'Start your day with a gentle yoga routine. Focus on deep breathing, stretching. It sets a peaceful tone for the day.',
+            Text(
+              widget.taskModel.description ?? '',
             ),
-            const Text(
-              'Date:10-05-24',
+            Text(
+              'Date: ${widget.taskModel.createdDate ?? ''}',
             ),
             const SizedBox(height: 8),
             Row(
@@ -38,14 +61,22 @@ class _TaskCardState extends State<TaskCard> {
                 _buildTaskStatusChip(),
                 Wrap(
                   children: [
-                    IconButton(
-                      onPressed: _onTabEditButton,
-                      icon: const Icon(Icons.edit_document),
+                    Visibility(
+                      visible: _changeStatusInProgress == false,
+                      replacement: const CenteredCircularProgressIndicator(),
+                      child: IconButton(
+                        onPressed: _onTapEditButton,
+                        icon: const Icon(Icons.edit),
+                      ),
                     ),
-                    IconButton(
-                      onPressed: _onTabDeleteButton,
-                      icon: const Icon(Icons.delete),
-                    )
+                    Visibility(
+                      visible: _deleteTaskInProgress == false,
+                      replacement: const CenteredCircularProgressIndicator(),
+                      child: IconButton(
+                        onPressed: _onTapDeleteButton,
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -56,7 +87,7 @@ class _TaskCardState extends State<TaskCard> {
     );
   }
 
-  void _onTabEditButton() {
+  void _onTapEditButton() {
     showDialog(
       context: context,
       builder: (context) {
@@ -64,23 +95,19 @@ class _TaskCardState extends State<TaskCard> {
           title: const Text('Edit Status'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              'New',
-              'Completed',
-              'Canceled',
-              'Progress',
-            ].map((e) {
+            children: ['New', 'Completed', 'Cancelled', 'Progress'].map((e) {
               return ListTile(
-                onTap: () {},
+                onTap: () {
+                  _changeStatus(e);
+                  Navigator.pop(context);
+                },
                 title: Text(e),
+                selected: _selectedStatus == e,
+                trailing: _selectedStatus == e ? const Icon(Icons.check) : null,
               );
             }).toList(),
           ),
           actions: [
-            TextButton(
-              onPressed: () {},
-              child: const Text('Ok'),
-            ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -93,23 +120,44 @@ class _TaskCardState extends State<TaskCard> {
     );
   }
 
-  void _onTabDeleteButton() {}
+  Future<void> _onTapDeleteButton() async {
+    _deleteTaskInProgress = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.deleteTask(widget.taskModel.sId!));
+    if (response.isSuccess) {
+      widget.onRefreshList();
+    } else {
+      _deleteTaskInProgress = false;
+      setState(() {});
+      showSnackBarMessage(context, response.errorMessage);
+    }
+  }
 
   Widget _buildTaskStatusChip() {
     return Chip(
-      label: const Text(
-        'New',
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
+      label: Text(
+        widget.taskModel.status!,
+        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(
-          color: Colors.purple,
-        ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      side: const BorderSide(
+        color: AppColors.themeColor,
       ),
     );
+  }
+
+  Future<void> _changeStatus(String newStatus) async {
+    _changeStatusInProgress = true;
+    setState(() {});
+    final NetworkResponse response = await NetworkCaller.getRequest(
+        url: Urls.changeStatus(widget.taskModel.sId!, newStatus));
+    if (response.isSuccess) {
+      widget.onRefreshList();
+    } else {
+      _changeStatusInProgress = false;
+      setState(() {});
+      showSnackBarMessage(context, response.errorMessage);
+    }
   }
 }

@@ -2,36 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:task/ui/screens/splash_screen.dart';
 import 'package:task/ui/utils/app_colors.dart';
 
-class TaskApp extends StatefulWidget {
-  const TaskApp({super.key});
+
+class TaskManagerApp extends StatefulWidget {
+  const TaskManagerApp({super.key});
+
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  State<TaskApp> createState() => _TaskAppState();
+  State<TaskManagerApp> createState() => _TaskManagerAppState();
 }
 
-class _TaskAppState extends State<TaskApp> {
+class _TaskManagerAppState extends State<TaskManagerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: TaskManagerApp.navigatorKey,
       theme: ThemeData(
         colorSchemeSeed: AppColors.themeColor,
         textTheme: const TextTheme(),
         inputDecorationTheme: _inputDecorationTheme(),
-        elevatedButtonTheme: _elevatedButtonTheme(),
+        elevatedButtonTheme: _elevatedButtonThemeData(),
       ),
       home: const SplashScreen(),
     );
   }
 
-  ElevatedButtonThemeData _elevatedButtonTheme() {
+  ElevatedButtonThemeData _elevatedButtonThemeData() {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.themeColor,
         foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 10,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         fixedSize: const Size.fromWidth(double.maxFinite),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
@@ -45,7 +46,7 @@ class _TaskAppState extends State<TaskApp> {
       fillColor: Colors.white,
       filled: true,
       hintStyle: const TextStyle(
-        fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w300
       ),
       border: _inputBorder(),
       enabledBorder: _inputBorder(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../widgets/task_card.dart';
+import 'package:task/ui/widgets/task_card.dart';
 
 class ProgressTaskScreen extends StatelessWidget {
   const ProgressTaskScreen({super.key});
@@ -10,7 +9,7 @@ class ProgressTaskScreen extends StatelessWidget {
     return ListView.separated(
       itemCount: 10,
       itemBuilder: (context, index) {
-        return const TaskCard();
+         // return const TaskCard();
       },
       separatorBuilder: (context, index) {
         return const SizedBox(height: 8);

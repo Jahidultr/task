@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:task/ui/screens/cancelled_task_screen.dart';
-import 'package:task/ui/screens/completed_task_screen.dart';
-import 'package:task/ui/screens/new_task_screen.dart';
 import 'package:task/ui/screens/progress_task_screen.dart';
+import 'package:task/ui/widgets/tm_app_bar.dart';
 
-import '../widgets/tm_app_bar.dart';
+import 'cancelled_task_screen.dart';
+import 'completed_task_screen.dart';
+import 'new_task_screen.dart';
 
 class MainBottomNavBarScreen extends StatefulWidget {
   const MainBottomNavBarScreen({super.key});
@@ -15,21 +15,19 @@ class MainBottomNavBarScreen extends StatefulWidget {
 
 class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
   int _selectedIndex = 0;
-
   final List<Widget> _screens = const [
     NewTaskScreen(),
     CompletedTaskScreen(),
     CancelledTaskScreen(),
-    ProgressTaskScreen(),
+    ProgressTaskScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: TMAppBar(),
+      appBar: const TMAppBar(),
       body: _screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(
-        // backgroundColor: Colors.grey,
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {
           _selectedIndex = index;
@@ -37,21 +35,21 @@ class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.add_task),
-            label: 'New Task',
+            icon: Icon(Icons.new_label),
+            label: 'New',
           ),
           NavigationDestination(
-            icon: Icon(Icons.incomplete_circle_rounded),
+            icon: Icon(Icons.check_box),
             label: 'Completed',
           ),
           NavigationDestination(
-            icon: Icon(Icons.cancel_sharp),
+            icon: Icon(Icons.close),
             label: 'Cancelled',
           ),
           NavigationDestination(
-            icon: Icon(Icons.add_chart_rounded),
+            icon: Icon(Icons.access_time_outlined),
             label: 'Progress',
-          ),
+          )
         ],
       ),
     );
